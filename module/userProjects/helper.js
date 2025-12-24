@@ -27,6 +27,7 @@ const certificateTemplateQueries = require(DB_QUERY_BASE_PATH + "/certificateTem
 const certificateService = require(GENERICS_FILES_PATH + "/services/certificate");
 const certificateValidationsHelper = require(MODULES_BASE_PATH + "/certificateValidations/helper");
 const _ = require("lodash");  
+const programActivityLogHelper = require(MODULES_BASE_PATH + `/programActivityLogs/helper`)
 
 /**
     * UserProjectsHelper
@@ -1323,6 +1324,10 @@ module.exports = class UserProjectsHelper {
                     }
 
                     await kafkaProducersHelper.pushProjectToKafka(project);
+                    await programActivityLogHelper.addProgramActivityLog(
+                        projectCreation.data.programId,
+                        projectCreation.data.solutionId
+                    )
                     
                     projectId = project._id;
                 }
