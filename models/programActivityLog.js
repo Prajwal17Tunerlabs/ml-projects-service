@@ -28,6 +28,8 @@ module.exports = {
 				default: [],
 			},
 		},
+
+		improvementProjectStatus: {},
 	},
 
 	compoundIndex: [
