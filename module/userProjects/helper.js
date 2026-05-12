@@ -386,7 +386,11 @@ module.exports = class UserProjectsHelper {
                 await kafkaProducersHelper.pushProjectToKafka(projectUpdated);
                 if(projectUpdated.isAPrivateProgram != true){
                     await programActivityLogHelper.addProgramActivityLog(
-                        projectUpdated.programId ?? projectUpdated.programInformation?._id,
+                        projectUpdated.programId
+                            ? projectUpdated.programId
+                            : (projectUpdated.programInformation
+                                ? projectUpdated.programInformation._id
+                                : undefined),
                         projectUpdated.solutionId
                     )
                 }
@@ -1670,7 +1674,9 @@ module.exports = class UserProjectsHelper {
                 await kafkaProducersHelper.pushProjectToKafka(userProject);
                 if(userProject.isAPrivateProgram != true){
                     await programActivityLogHelper.addProgramActivityLog(
-                        userProject.programInformation._id ?? data.programId,
+                        userProject.programInformation && userProject.programInformation._id
+                            ? userProject.programInformation._id
+                            : data.programId,
                         userProject.solutionId
                     )
                 }
